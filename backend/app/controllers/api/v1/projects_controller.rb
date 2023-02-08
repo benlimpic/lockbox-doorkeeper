@@ -1,14 +1,9 @@
-module Api
-  module V1
-    class ProjectsController < ApiController
-      before_action :doorkeeper_authorize!
-      before_action :current_user
-      before_action :set_project, only: %i[show edit update destroy]
-      # respond_to    :json
+module Api::V1
+    class ProjectsController < ApplicationController
       
       # GET /project or /project.json
       def index
-        @projects = Project.where(user_id: params[:user_id])
+        @projects = Project.all
         render json: @projects
       end
 
@@ -17,52 +12,30 @@ module Api
         render json: @project
       end
 
-      # GET /projects/new
-      def new
-        render json: @project = Project.new
-      end
-
-      # GET /projects/1/edit
-      def edit
-        render json: @project
-      end
-
       # POST /projects or /projects.json
       def create
         @project = Project.new(project_params)
-
-        respond_to do |format|
-          if @project.save
-            # format.html { redirect_to api_v1_project_url(@project), notice: 'project was successfully created.' }
-            format.json { render :show, status: :created }
-          else
-            # format.html { render :new, status: :unprocessable_entity }
-            format.json { render json: @project.errors, status: :unprocessable_entity }
-          end
+        
+          render json: @project, status: :created
+        else
+          render json: @project.errors, status: :unprocessable_entity
         end
       end
 
       # PATCH/PUT /projects/1 or /projects/1.json
       def update
-        respond_to do |format|
-          if @project.update(project_params)
-            format.html { redirect_to api_v1_project_url(@project), notice: 'project was successfully updated.' }
-            format.json { render :show, status: :ok}
-          else
-            # format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @project.errors, status: :unprocessable_entity }
-          end
+        if @project.update(project_params)
+          render json: @project, status: :ok
+        else
+          render json: @project.errors, status: :unprocessable_entity
+
         end
       end
 
       # DELETE /projects/1 or /projects/1.json
       def destroy
         @project.destroy
-
-        respond_to do |format|
-          format.html { redirect_to api_v1_projects_url, notice: 'project was successfully destroyed.' }
-          format.json { head :no_content }
-        end
+        render json: { message: 'project deleted' }, status: :ok
       end
 
       private
@@ -75,14 +48,25 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def project_params
-        params.require(:project).permit( :mac, :cut, :page, :reference, :assigneeName, :assigneeEmail, :assigneePhone, :details, :assignmentDate, :techName, :techEmail, :techPhone, :notes, :oDate, :projectTitle, :stamp, :description, :usable, :inUse, :reserved, :archived, :status, )
+        params.require(:project).permit( 
+      :mac,
+      :tmk,
+      :sop,
+      :dateCreated,
+      :siteKeyway,
+      :siteName,
+      :siteAddress,
+      :siteCity,
+      :siteState,
+      :siteZip,
+      :siteDescription,
+      :siteNotes,
+      :contactName,
+      :contactPosition,
+      :contactEmail,
+      :contactPhone,
+      :contactDetails,
+      :user_id  )
       end
     end
   end
-end
-
-
-
-
-
-

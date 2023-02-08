@@ -1,7 +1,5 @@
-module Api
-  module V1
+  module Api::V1
     class KeysController < ApplicationController
-      before_action :set_key, only: %i[show edit update destroy]
 
       # GET /keys or /keys.json
       def index
@@ -14,52 +12,31 @@ module Api
         render json: @key
       end
 
-      # GET /keys/new
-      def new
-        render json: @key = Key.new
-      end
-
-      # GET /keys/1/edit
-      def edit
-        render json: @key
-      end
-
       # POST /keys or /keys.json
       def create
         @key = Key.new(key_params)
+        @key.project_id = params[:project_id]
 
-        respond_to do |format|
-          if @key.save
-            # format.html { redirect_to api_v1_key_url(@key), notice: 'key was successfully created.' }
-            format.json { render :show, status: :created }
-          else
-            # format.html { render :new, status: :unprocessable_entity }
-            format.json { render json: @key.errors, status: :unprocessable_entity }
-          end
+        if @key.save
+          render json: @key, status:
+        else
+          render json: @key.errors, status: :unprocessable_entity
         end
       end
 
       # PATCH/PUT /keys/1 or /keys/1.json
       def update
-        respond_to do |format|
-          if @key.update(key_params)
-            # format.html { redirect_to api_v1_key_url(@key), notice: 'key was successfully updated.' }
-            format.json { render :show, status: :ok, }
-          else
-            # format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @key.errors, status: :unprocessable_entity }
-          end
+        if @key.update(key_params)
+          render json: @key, status: :ok
+        else
+          render json: @key.errors, status: :unprocessable_entity
         end
       end
 
       # DELETE /keys/1 or /keys/1.json
       def destroy
         @key.destroy
-
-        respond_to do |format|
-          format.html { redirect_to api_v1_keys_url, notice: 'key was successfully destroyed.' }
-          format.json { head :no_content }
-        end
+        render json: { message: 'key deleted' }, status: :ok
       end
 
       private
@@ -76,5 +53,4 @@ module Api
       end
     end
   end
-end
 

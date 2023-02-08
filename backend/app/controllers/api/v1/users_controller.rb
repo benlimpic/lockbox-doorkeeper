@@ -1,9 +1,7 @@
 # frozen_string_literal: true
-
-module Api
-  module V1
+module Api::V1
     class UsersController < ApiController
-      before_action :doorkeeper_authorize!
+      # before_action :doorkeeper_authorize! 
       before_action :current_user
       respond_to    :json
 
@@ -22,4 +20,3 @@ module Api
       end
     end
   end
-end

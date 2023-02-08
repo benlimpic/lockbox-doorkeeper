@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BeatLoader } from "react-spinners";
 
 import MAC from "../../../Functions/PageSort/MAC.js";
@@ -39,6 +39,7 @@ export const FormMatrix = ({
   const [contactDetails, setContactDetails] = useState("Contact Details");
 
 
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e, setState) => {
@@ -55,11 +56,14 @@ export const FormMatrix = ({
     }, 1000);
   };
 
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setIsLoading(true);
     axios
-      .post("http://localhost:3000/api/v1/projects.json", {
+      .post("http://localhost:3000/api/v1/projects", {
         mac: maxAC,
         tmk: JSON.stringify(tmk),
         sop: JSON.stringify(sop),
@@ -77,6 +81,7 @@ export const FormMatrix = ({
         contactEmail,
         contactPhone,
         contactDetails,
+        user_id: 1,
       })
       .then((res) => {
         console.log(res);

@@ -1,6 +1,6 @@
   module Api::V1
     class KeysController < ApplicationController
-
+      
       # GET /keys or /keys.json
       def index
         @keys = Key.where(project_id: params[:project_id])
@@ -9,16 +9,15 @@
 
       # GET /keys/1 or /keys/1.json
       def show
+        @key = Key.find_by_id(params[:id])
         render json: @key
-      end
 
       # POST /keys or /keys.json
       def create
         @key = Key.new(key_params)
         @key.project_id = params[:project_id]
-
-        if @key.save
-          render json: @key, status:
+          if @key.save
+          render json: @key, status: :created
         else
           render json: @key.errors, status: :unprocessable_entity
         end
@@ -53,4 +52,5 @@
       end
     end
   end
+end
 

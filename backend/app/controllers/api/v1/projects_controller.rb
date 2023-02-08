@@ -9,13 +9,14 @@ module Api::V1
 
       # GET /projects/1 or /projects/1.json
       def show
+        @project = Project.find_by_id(params[:id])
         render json: @project
       end
 
       # POST /projects or /projects.json
       def create
         @project = Project.new(project_params)
-        
+          if @project.save
           render json: @project, status: :created
         else
           render json: @project.errors, status: :unprocessable_entity

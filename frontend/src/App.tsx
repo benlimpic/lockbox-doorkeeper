@@ -4,6 +4,7 @@ import AppBar from './app/features/appbar/AppBar';
 import Create from './app/features/dashboard/src/Pages/Create';
 import Home from './app/features/dashboard/src/Pages/Home';
 import ProjectsPage from './app/features/dashboard/src/Pages/ProjectsPage';
+import ProjectPage from './app/features/dashboard/src/Pages/ProjectPage';
 import PrivateRoute from './app/features/routes/PrivateRoute';
 import PublicOnlyRoute from './app/features/routes/PublicOnlyRoute';
 import Login from './app/features/sessions/Login';
@@ -27,11 +28,17 @@ function App() {
                 <Home />
               </PrivateRoute>
             } />
-            <Route path="/projects" element={
+            <Route path="/projects">
+            <Route index element={
               <PrivateRoute>
                 <ProjectsPage />
               </PrivateRoute>
-            } />
+              } />
+            <Route path=":id" element={
+              <PrivateRoute>
+                <ProjectPage />
+              </PrivateRoute> } />
+            </Route>
             <Route path="/create" element={
               <PrivateRoute>
                 <Create />

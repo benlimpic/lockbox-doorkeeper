@@ -15,7 +15,7 @@ import { To, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['Home', 'Projects', 'Create'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -44,6 +44,12 @@ const ResponsiveAppBar = () => {
 
   function handleNavigate(route: To, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event?.preventDefault();
+    navigate(route);
+  }
+
+  function handleNavigateMenu(route: To, event: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
+    event?.preventDefault();
+    handleCloseNavMenu();
     navigate(route);
   }
 
@@ -156,11 +162,27 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem>
+                <Typography textAlign="center"
+                onClick={(event) => handleNavigateMenu("/", event)}>
+                  Home
+                </Typography>
+              </MenuItem>
+
+              <MenuItem>
+                <Typography textAlign="center"
+                onClick={(event) => handleNavigateMenu("/projects", event)}>
+                  Projects
+                </Typography>
+              </MenuItem>
+
+              <MenuItem>
+                <Typography textAlign="center"
+                onClick={(event) => handleNavigateMenu("/create", event)}>
+                  Create
+                </Typography>
+              </MenuItem>
+              
             </Menu>
           </Box>
           <Typography
